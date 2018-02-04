@@ -47,9 +47,9 @@
       </view>
       <view class="arrange-person" wx:if="{{ myArrange.flag }}">
           <block wx:for="{{myArrange.arrange}}" wx:key="{{item.date}}">
-            <view class="arrange-per-day" style='display:inblock' bindtap='onTapMyDate' data-colid='{{item.date}}'>
+            <view class="arrange-per-day" style='display:inblock' bindtap='onTapMyDate' data-idx='{{index}}'>
               <text class="arrange-date">{{item.date}}</text>
-              <view class="arrange-status" style='background-color:{{item.status}}'></view>
+              <view class="arrange-status" style='background-color:{{item.color}}'></view>
             </view>
           </block>
       </view>
@@ -68,7 +68,7 @@
           <block wx:for="{{fakeArrange[currentSelectedPerson].arrange}}" wx:key="{{item.date}}">
             <view class="arrange-per-day" style='display:inblock'>
               <text class="arrange-date">{{item.date}}</text>
-              <view class="arrange-status" style='background-color:{{item.status}}'></view>
+              <view class="arrange-status" style='background-color:{{item.color}}'></view>
             </view>
           </block>
       </view>

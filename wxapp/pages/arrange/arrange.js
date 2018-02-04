@@ -28,7 +28,10 @@ function generateDummyArrange() {
     var ridx = Math.floor(Math.random() * allStatus.length);
     var parts = dates[i].split('-')
     result.push(
-      { date: [parts[1], parts[2]].join('/'), status: status2color[allStatus[ridx]]}
+      {datekey: dates[i], 
+       date: [parts[1], parts[2]].join('/'),
+       status: allStatus[ridx],
+       color: status2color[allStatus[ridx]]}
     )
   }
   return result
@@ -164,11 +167,24 @@ Page({
   },
 
   onTapMyDate: function (e) {
-    var colId = e.currentTarget.dataset.colid
-    console.log('click colId: ' + colId)
+    var idx = e.currentTarget.dataset.idx
+    //console.log('click idx: ' + idx)
+    var curStatus = this.data.myArrange.arrange[idx].status
+    var allStatus = Object.keys(status2color).sort()
+    var statusOrder = 0
+    for(var i = 0; i < allStatus.length; i++) {
+      if (curStatus == allStatus[i]) {
+        statusOrder = i
+        break
+      }
+    }
+    var nextOrder = (statusOrder + 1) % allStatus.length
+    this.data.myArrange.arrange[idx].status = allStatus[nextOrder]
+    this.data.myArrange.arrange[idx].color = status2color[allStatus[nextOrder]]
     this.setData({
-      toView: colId
+      myArrange: this.data.myArrange
     })
+    //console.log("next color: " + status2color[allStatus[nextOrder]])
   },
 
   onExpandMyDetail: function (e) {
@@ -182,7 +198,7 @@ Page({
 
   onTapPerson: function (e) {
     var idx = e.currentTarget.dataset.idx
-
+    
     this.setData({
       currentSelectedPerson: idx
     });
