@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/arrange/arrange"
+  ],
+  "window": {
+    "navigationBarTitleText": "休假轮值表",
+    "navigationBarBackgroundColor": "#0387FE",
+    "navigationBarTextStyle": "white"
+  }
+}

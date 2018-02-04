@@ -1,0 +1,72 @@
+<!--pages/arrange.wxml-->
+<view>
+  <view class="header">
+    <text class="date">{{currentDate}}</text>
+  </view>
+    <view class="arrange-field" style='padding-left:20rpx'>
+      <view><text style='color:red'>* </text><text>标题</text></view>
+      <input placeholder='15字以内' maxlength='15'></input>
+    </view>
+    <view class="arrange-field" style='padding-left:20rpx'>
+      <view><text style='color:red'>* </text><text>创建人</text></view>
+      <text style='color:#aaa'>某人</text>
+    </view>
+    <view class="arrange-field">
+      <text>开始</text>
+      <picker mode="date" value="{{startDate}}" start="2017-09-01" end="2020-09-01" bindchange="bindStartDateChange">
+        <view class="picker">
+           {{startDate}}
+        </view>
+      </picker>
+    </view>
+    <view class="arrange-field">
+      <text>结束</text>
+      <picker mode="date" value="{{endDate}}" start="2017-09-01" end="2020-09-01" bindchange="bindEndDateChange">
+        <view class="picker">
+          {{endDate}}
+        </view>
+      </picker>
+    </view>
+    <!--start ME-->
+      <view class="arrange-brief" bindtap="onExpandMyDetail" data-name='myArrange'>
+        <view class="userinfo" style='display:inblock'>
+          <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+          <text class="userinfo-nickname">我</text>
+        </view>
+        <view class="op-down-arrow">
+            <view class="triangle-facing-down" 
+            style="{{ myArrange.flag? 'transform: rotate(135deg);' : 'transform: rotate(-45deg);' }}"/>
+        </view>
+      </view>
+      <view class="arrange-person" wx:if="{{ myArrange.flag }}">
+          <block wx:for="{{myArrange.arrange}}" wx:key="{{item.date}}">
+            <view class="arrange-per-day" style='display:inblock' bindtap='onTapMyDate' data-colid='{{item.date}}'>
+              <text class="arrange-date">{{item.date}}</text>
+              <view class="arrange-status" style='background-color:{{item.status}}'></view>
+            </view>
+          </block>
+      </view>
+    <!--end ME-->
+      <scroll-view class="people-all" scroll-x="true">
+        <block wx:for="{{fakeArrange}}" wx:key="{{item.nickName}}">
+            <view class="person" bindtap='onTapPerson' data-idx='{{index}}'>
+              <view class="userinfo" style="{{index==currentSelectedPerson? 'border:3rpx solid #0387FE;' : 'border: 0rpx'}}">
+                <image class="userinfo-avatar" src="{{item.avatarUrl}}" background-size="cover"></image>
+                <text class="userinfo-nickname">{{item.nickName}}</text>
+              </view>
+            </view>
+        </block>
+    </scroll-view>
+    <view class="arrange-person">
+          <block wx:for="{{fakeArrange[currentSelectedPerson].arrange}}" wx:key="{{item.date}}">
+            <view class="arrange-per-day" style='display:inblock'>
+              <text class="arrange-date">{{item.date}}</text>
+              <view class="arrange-status" style='background-color:{{item.status}}'></view>
+            </view>
+          </block>
+      </view>
+    <view class="bottom-ops">
+        <button class='button'>提交</button>
+    </view>
+</view>
+
