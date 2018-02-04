@@ -33,6 +33,13 @@
           <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
           <text class="userinfo-nickname">我</text>
         </view>
+        <view class="lengend">
+          <block wx:for="{{lengend}}" wx:key="{{item.status}}">
+              <view class="lengend-status" style='background-color:{{item.color}}'>
+                <text>{{item.status}}</text>
+              </view>
+          </block>
+        </view>
         <view class="op-down-arrow">
             <view class="triangle-facing-down" 
             style="{{ myArrange.flag? 'transform: rotate(135deg);' : 'transform: rotate(-45deg);' }}"/>

@@ -6,11 +6,11 @@ const today = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate()
 const default_date = [d.getFullYear(), (d.getMonth() + 1), d.getDate()].join('-')
 
 const status2color = {
-  'working': '#FF9900',
-  'leave': '#FFFF00',
-  'wfh':  '#0099CC',
-  'wfk':   '#CCCCFF',
-  'nofill': '#CCCCCC'
+  'Working': '#FF9900',
+  'Leave': '#FFFF00',
+  'WFH':  '#0099CC',
+  'AFK':   '#CCCCFF',
+  'NotFill': '#CCCCCC'
 }
 
 function generateDummyArrange() {
@@ -80,7 +80,17 @@ Page({
         hasUserInfo: true
       })
     }
-
+    var lengend = []
+    for (var prop in status2color) {
+      lengend.push({
+        status: prop,
+        color: status2color[prop]
+      })
+    }
+    this.setData({
+      lengend: lengend
+    })
+     
   },
 
   /**
