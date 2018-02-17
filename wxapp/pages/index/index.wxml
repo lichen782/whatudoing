@@ -24,56 +24,29 @@
             </view>
         </view>
     </view>
+  <view class="seperator">
+  </view>
+  <scroll-view class="arrange-list" scroll-y="true">
+  <block wx:for="{{arrangeList}}" wx:key="{{item.id}}">
+    <view class="arrange-container" bindtap="onArrangeDetail" data-arrange='{{item.id}}' style="{{index % 2 == 0 ? 'border: 3rpx solid #0387FE;':'border: 3rpx solid #ff629a;'}}">
+    <view class="arrange-uppper">
+      <text class='arrange-title'>{{item.title}}</text>
+      <text class='arrange-date'>{{item.start}}-{{item.end}}</text>
+      <text class='arrange-creator'>{{item.creator}}</text>
+    </view>
+    <view class="arrange-stats" style="{{index % 2 == 0 ? 'border-top: 2rpx solid #0387FE;':'border-top: 2rpx solid #ff629a;'}}">
+      <text>{{item.attendCnt}}人</text>
+      <image src="../images/people.png" class='arrange-people'/>
+    </view>
+  </view>
+  </block>
+</scroll-view>
 </view>
 
-  <view class="swiper-tab">
-    <view style="padding-left:5px;" class="tab-list-left {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">我参与的   
-    </view>
-    <view class="tab-list-right {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">我创建的</view>
-  </view>
-  <swiper current="{{currentTab}}" class="swiper-box" bindchange="bindChange" style="height:{{winHeight - 31}}px">
-    <swiper-item>
-      <view class="arrange-container" bindtap="onArrangeDetail" data-arrange='123'>
-          <view class="arrange-uppper">
-            <text class='arrange-title'>2018年春节休假安排</text>
-            <text class='arrange-date'>2018/2/14-2018/2/28</text>
-            <text class='arrange-creator'>Figo Feng</text>
-          </view>
-          <view class="arrange-stats">
-            <text>28人</text>
-            <image src="../images/people.png" class='arrange-people'/>
-          </view>
-      </view>
-      <view class="arrange-container" bindtap="onArrangeDetail" data-arrange='124'>
-          <view class="arrange-uppper">
-            <text class='arrange-title'>2018年十一休假安排</text>
-            <text class='arrange-date'>2018/9/25-2018/10/12</text>
-            <text class='arrange-creator'>Figo Feng</text>
-          </view>
-          <view class="arrange-stats">
-            <text>28人</text>
-            <image src="../images/people.png" class='arrange-people'/>
-          </view>
-      </view>
-    </swiper-item>
-    <swiper-item>
-    <view class="arrange-container" bindtap="onArrangeDetail" data-arrange='123'>
-          <view class="arrange-uppper">
-            <text class='arrange-title'>2018年春节休假安排</text>
-            <text class='arrange-date'>2018/2/14-2018/2/28</text>
-            <text class='arrange-creator'>Figo Feng</text>
-          </view>
-          <view class="arrange-stats">
-            <text>28人</text>
-            <image src="../images/people.png" class='arrange-people'/>
-          </view>
-      </view>
-    </swiper-item>
-  </swiper>
-
-  <view class="bottom-ops">
-    <view class="button"></view>
-  </view>
+    
+<view class="bottom-ops">
+  <view class="button"></view>
+</view>
   <!--view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>

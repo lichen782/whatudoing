@@ -108,6 +108,7 @@ Page({
     }
     this.setData({
       arrangeList: arrangeList,
+      fullArrangeList: arrangeList,
       allMyDates: allMyDatesStr,
       dateStrToIds: dateStrToIds,
     })
@@ -247,13 +248,26 @@ Page({
   onTapDay: function (e) {
     var ids = e.currentTarget.dataset.ids;
     var fullstr = e.currentTarget.dataset.fullstr;
-    if (ids) {
-      console.log("date: " + fullstr + ", ids: " + ids[0])
-    } else {
-      console.log("date: " + fullstr + ", No arrange")
-    }
     this.setData({
       selectDayStr: fullstr
     })
+    if (ids) {
+      console.log("date: " + fullstr + ", ids: " + ids[0])
+      var arrangeList = []
+      for (var i in this.data.fullArrangeList) {
+        if (ids.includes(this.data.fullArrangeList[i].id)) {
+          arrangeList.push(this.data.fullArrangeList[i])
+        }
+      }
+      this.setData({
+        arrangeList: arrangeList,
+      })
+    } else {
+      console.log("date: " + fullstr + ", No arrange")
+      this.setData({
+        arrangeList: this.data.fullArrangeList,
+      })
+    }
+    
   }
 })
