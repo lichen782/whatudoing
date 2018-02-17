@@ -3,7 +3,27 @@
 var util = require('../../utils/util.js');
 var d = new Date()
 const app = getApp()
-const todayStr = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'
+
+function dummyArrangeList() {
+  return [
+    {
+      start: "2018/02/14",
+      end:   "2018/02/28",
+      title: "2018年春节休假安排",
+      id:    123,
+      creator: "Figo Feng",
+      attendCnt: 28,
+    },
+    {
+      start: "2018/09/25",
+      end: "2018/10/12",
+      title: "2018年十一休假安排",
+      id: 124,
+      creator: "Figo Feng",
+      attendCnt: 28,
+    }
+  ]
+}
 
 Page({
   data: {
@@ -14,9 +34,10 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     currentTab: 0,
-    currentDate: todayStr,
+    selectDayStr: '',
     today: util.today(new Date),//for today
     curMonth: util.curMonth(new Date),//for today
+    
   },
   onLoad: function () {
     var that = this
@@ -61,8 +82,35 @@ Page({
         }
       })
     }
-
+    this.loadMyArranges()
     this.loadCalendarData()
+    
+  },
+
+  loadMyArranges: function() {
+    var arrangeList = dummyArrangeList()//from backend
+    var dateStrToIds = {}
+    var allmyDates = new Array()
+    var allMyDatesStr = []
+    for (var i in arrangeList) {
+      var startDate = new Date(arrangeList[i].start)
+      var endDate = new Date(arrangeList[i].end)
+      var curRange = util.getDates(startDate, endDate)
+      for (var j in curRange) {
+        var strDate = util.getFormattedDate(curRange[j])
+        allMyDatesStr.push(strDate)
+        if (!(strDate in dateStrToIds)) {
+          dateStrToIds[strDate] = []
+        }
+        dateStrToIds[strDate].push(arrangeList[i].id)
+      }
+      allmyDates = allmyDates.concat(curRange)
+    }
+    this.setData({
+      arrangeList: arrangeList,
+      allMyDates: allMyDatesStr,
+      dateStrToIds: dateStrToIds,
+    })
   },
 
   getThisMonthDays: function(year, month) {
@@ -95,9 +143,19 @@ Page({
   // 绘制当月天数占的格子
   calculateDays: function (year, month) {
     let days = [];
+    var fest = '';
     const thisMonthDays = this.getThisMonthDays(year, month);
     for (let i = 1; i <= thisMonthDays; i++) {
-      days.push(i);
+      var dateObj = new Date(year, month - 1, i)
+      var fullStr = util.getFormattedDate(dateObj)
+      var isArranged = this.data.allMyDates.includes(fullStr)
+      days.push({ 
+        date: i,
+        fest: util.solarDay3(year, month - 1, i) || util.getCDay(year, month - 1, i),
+        isArranged: this.data.allMyDates.includes(fullStr),
+        ids: isArranged? this.data.dateStrToIds[fullStr] : undefined,
+        fullStr: fullStr,
+        })
     }
     this.setData({
       days
@@ -186,4 +244,16 @@ Page({
       url: '../arrange/arrange',
     })
   },
+  onTapDay: function (e) {
+    var ids = e.currentTarget.dataset.ids;
+    var fullstr = e.currentTarget.dataset.fullstr;
+    if (ids) {
+      console.log("date: " + fullstr + ", ids: " + ids[0])
+    } else {
+      console.log("date: " + fullstr + ", No arrange")
+    }
+    this.setData({
+      selectDayStr: fullstr
+    })
+  }
 })

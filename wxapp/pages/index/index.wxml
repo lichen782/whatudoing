@@ -17,7 +17,10 @@
             <view wx:if="{{hasEmptyGrid}}" class="grid white-color box box-align-center box-pack-center" wx:for="{{empytGrids}}" wx:key="{{index}}" data-idx="{{index}}">
             </view>
             <view class="grid white-color box box-align-center box-pack-center" wx:for="{{days}}" wx:key="{{index}}" data-idx="{{index}}">
-                <view class="day {{(index+1) ==today ? (curMonth==cur_month? 'border-radius blue-bg':'border-radius blue-bd') : ''}} box box-align-center box-pack-center">{{item}}</view>
+                <view class="day border-radius {{(index+1) ==today && curMonth==cur_month ? 'blue-bg': ''}} {{item.fullStr == selectDayStr ? 'border-radius blue-bd' : ''}} {{item.isArranged ? 'pink-bd' : ''}}  box box-align-center box-pack-center" style='flex-direction: column' bindtap='onTapDay' data-ids='{{item.ids}}' data-fullstr='{{item.fullStr}}'>
+                <text>{{item.date}}</text>
+                <text style="font-size:20rpx;color=#eee">{{item.fest}}</text>
+                </view>
             </view>
         </view>
     </view>
