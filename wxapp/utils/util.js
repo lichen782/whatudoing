@@ -165,7 +165,7 @@ function solarDay3(year, month, day) {
   var sTermInfo = new Array(0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758)
   var solarTerm = new Array("小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至")
   var lFtv = new Array("0101 春节", "0115 元宵节", "0505 端午节", "0707 七夕节", "0715 中元节", "0815 中秋节", "0909 重阳节", "1208 腊八节", "1224 小年", "1230 除夕")
-  var sFtv = new Array("0101*元旦", "0214 情人节", "0308 妇女节", "0312 植树节", "0315 消费者权益日", "0401 愚人节", "0501 劳动节", "0504 青年节", "0512 护士节", "0601 儿童节", "0701 建党节 香港回归纪念", "0801 建军节", "0909 毛主席逝世纪念", "0910 教师节", "0928 孔子诞辰", "1001*国庆节",
+  var sFtv = new Array("0101 元旦", "0214 情人节", "0308 妇女节", "0312 植树节", "0315 消费者权益日", "0401 愚人节", "0501 劳动节", "0504 青年节", "0512 护士节", "0601 儿童节", "0701 建党节 香港回归纪念", "0801 建军节", "0909 毛主席逝世", "0910 教师节", "0928 孔子诞辰", "1001 国庆节",
     "1006 老人节", "1024 联合国日", "1112 孙中山诞辰", "1220 澳门回归纪念", "1225 圣诞节", "1226 毛主席诞辰")
 
   var sDObj = new Date(year, month, day);
@@ -183,8 +183,8 @@ function solarDay3(year, month, day) {
   //国历节日 
   for (i in sFtv) {
     if (sFtv[i].match(/^(\d{2})(\d{2})([\s*])(.+)$/)) {
-      tmp1 = Number(RegExp.$1) - (SM + 1)
-      tmp2 = Number(RegExp.$2) - SD
+      tmp1 = Number(RegExp.$1) - (month + 1)
+      tmp2 = Number(RegExp.$2) - day
       if (tmp1 == 0 && tmp2 == 0) solarFestival = RegExp.$4
     }
   }
@@ -199,8 +199,9 @@ function solarDay3(year, month, day) {
   if (solarTerms == '' && solarFestival == '' && lunarFestival == '')
     festival = '';
   else
-    festival = solarTerms + ' ' + solarFestival + ' ' + lunarFestival;
+    festival = solarFestival + ' ' + lunarFestival;
 
+  festival = festival.trim()
   //console.log('fest: ' + festival)
   return (festival);
 } 
@@ -231,6 +232,10 @@ function getFormattedDate(date) {
   day = day.length > 1 ? day : '0' + day;
 
   return year + '/' + month + '/' + day;
+}
+
+String.prototype.trim = function () {
+  return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 
 module.exports = {

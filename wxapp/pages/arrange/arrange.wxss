@@ -49,6 +49,7 @@ Page {
   padding: 10rpx 40rpx 10rpx 40rpx;
   background-color: white;
   flex-wrap: nowrap;
+  color: #938d8d;
 }
 
 .picker {
@@ -67,8 +68,8 @@ Page {
 }
 
 .button {
-  color: white;
-  background-color: #0387FE;
+  color: #0387FE;
+  border: 3rpx solid #0387FE;
   width: 80%;
   height: 80%;
 }
@@ -173,7 +174,7 @@ Page {
   flex-direction: row;
   white-space: nowrap;
   align-items: center;
-  margin: 20rpx 0rpx 20rpx 0rpx;
+  margin: 20rpx 0rpx 20rpx 0rpx; 
 }
 
 .lengend-status {

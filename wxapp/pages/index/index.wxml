@@ -27,25 +27,28 @@
   <view class="seperator">
   </view>
   <scroll-view class="arrange-list" scroll-y="true">
-  <block wx:for="{{arrangeList}}" wx:key="{{item.id}}">
-    <view class="arrange-container" bindtap="onArrangeDetail" data-arrange='{{item.id}}' style="{{index % 2 == 0 ? 'border: 3rpx solid #0387FE;':'border: 3rpx solid #ff629a;'}}">
-    <view class="arrange-uppper">
-      <text class='arrange-title'>{{item.title}}</text>
-      <text class='arrange-date'>{{item.start}}-{{item.end}}</text>
-      <text class='arrange-creator'>{{item.creator}}</text>
-    </view>
-    <view class="arrange-stats" style="{{index % 2 == 0 ? 'border-top: 2rpx solid #0387FE;':'border-top: 2rpx solid #ff629a;'}}">
-      <text>{{item.attendCnt}}人</text>
-      <image src="../images/people.png" class='arrange-people'/>
-    </view>
-  </view>
-  </block>
-</scroll-view>
+    <block wx:for="{{arrangeList}}" wx:key="{{item.id}}">
+      <view id='{{item.id}}' class="arrange-container" data-index="{{index}}"  data-id="{{item.id}}" style="{{index % 2 == 0 ? 'border: 4rpx solid #0387FE;':'border: 4rpx solid #ff629a;'}}" bindtap='onArrangeDetail'>
+        <view class="arrange-uppper">
+          <view id='{{item.id}}' class="del" data-title='{{item.title}}' catchtap='onDelArrange'>
+            <image src="../images/x.png" class='del-pic'/>
+          </view>
+          <text class='arrange-title'>{{item.title}}</text>
+          <text class='arrange-date'>{{item.start}}-{{item.end}}</text>
+          <text class='arrange-creator'>{{item.creator}}</text>
+        </view>
+        <view class="arrange-stats" style="{{index % 2 == 0 ? 'border-top: 3rpx solid #0387FE;':'border-top: 3rpx solid #ff629a;'}}">
+          <text>{{item.attendCnt}}人</text>
+          <image src="../images/people.png" class='arrange-people'/>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
 </view>
 
     
 <view class="bottom-ops">
-  <view class="button"></view>
+  <view class="button" bindtap='onAddArrange'></view>
 </view>
   <!--view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>

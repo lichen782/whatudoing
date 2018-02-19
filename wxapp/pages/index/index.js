@@ -33,11 +33,9 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    currentTab: 0,
     selectDayStr: '',
     today: util.today(new Date),//for today
     curMonth: util.curMonth(new Date),//for today
-    
   },
   onLoad: function () {
     var that = this
@@ -83,8 +81,7 @@ Page({
       })
     }
     this.loadMyArranges()
-    this.loadCalendarData()
-    
+    this.loadCalendarData()   
   },
 
   loadMyArranges: function() {
@@ -144,12 +141,11 @@ Page({
   // 绘制当月天数占的格子
   calculateDays: function (year, month) {
     let days = [];
-    var fest = '';
     const thisMonthDays = this.getThisMonthDays(year, month);
     for (let i = 1; i <= thisMonthDays; i++) {
       var dateObj = new Date(year, month - 1, i)
       var fullStr = util.getFormattedDate(dateObj)
-      var isArranged = this.data.allMyDates.includes(fullStr)
+      var isArranged = this.data.allMyDates.includes(fullStr)     
       days.push({ 
         date: i,
         fest: util.solarDay3(year, month - 1, i) || util.getCDay(year, month - 1, i),
@@ -223,28 +219,19 @@ Page({
       hasUserInfo: true
     })
   },
-  swichNav: function (e) {
-    if (this.data.currentTab === e.target.dataset.current) {
-      return false;
-    } else {
-      this.setData({
-        currentTab: e.target.dataset.current
-      })
-    }
-  },
-  bindChange: function (e) {
-    this.setData({ currentTab: e.detail.current });
-  },
+
   onArrangeDetail: function (e) {
-    var arrange = e.currentTarget.dataset.arrange
-    this.goArrangePage(arrange)
+    var arrangeId = e.currentTarget.dataset.id
+    this.goArrangePage(arrangeId)
   },
+
   goArrangePage: function (arrangeId) {
     console.log("arrange id: " + arrangeId)
     wx.navigateTo({
       url: '../arrange/arrange',
     })
   },
+
   onTapDay: function (e) {
     var ids = e.currentTarget.dataset.ids;
     var fullstr = e.currentTarget.dataset.fullstr;
@@ -269,5 +256,48 @@ Page({
       })
     }
     
-  }
+  },
+
+  getArrangeIndex: function (id, targetList) {
+    var arrangeList = targetList;
+    id = Number(id)
+    for (var i = 0; i < arrangeList.length; i++) {
+      if (arrangeList[i].id === id) {
+        return i;
+      }
+    }
+    return -1;
+  },
+
+  onDelArrange: function (e) {
+    var id = e.currentTarget.id
+    var title = e.currentTarget.dataset.title
+    var that = this
+    wx.showModal({
+      title: '提示',
+      content: '要删除' + title + '么？',
+      success: function (res) {
+        if (res.confirm) {
+          that.deleteFromArrangeList(id)
+        }
+      }
+    })
+  },
+
+  deleteFromArrangeList: function (id) {
+    var index = this.getArrangeIndex(id, this.data.arrangeList)
+    this.data.arrangeList.splice(index, 1)
+    index = this.getArrangeIndex(id, this.data.fullArrangeList)
+    this.data.fullArrangeList.splice(index, 1)
+    this.setData({
+      arrangeList: this.data.arrangeList,
+      fullArrangeList: this.data.fullArrangeList,
+    })
+  },
+
+  onAddArrange: function(e) {
+    wx.navigateTo({
+      url: '../arrange/arrange',
+    })
+  },
 })
